@@ -6,75 +6,35 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="pagination" *ngIf="totalPages > 1">
+    <div class="flex items-center justify-center gap-2 my-6" *ngIf="totalPages > 1">
       <button 
-        class="pagination-btn" 
+        class="px-4 py-2 border rounded-lg transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         (click)="onPageChange(currentPage - 1)"
         [disabled]="currentPage === 0">
         Anterior
       </button>
 
-      <div class="pagination-numbers">
+      <div class="flex gap-1">
         <button 
           *ngFor="let page of visiblePages"
-          class="pagination-btn page-number"
-          [class.active]="page === currentPage"
+          class="min-w-[40px] px-3 py-2 border rounded-lg transition-colors"
+          [class.bg-primary-500]="page === currentPage"
+          [class.text-white]="page === currentPage"
+          [class.hover:bg-gray-50]="page !== currentPage"
           (click)="onPageChange(page)">
           {{ page + 1 }}
         </button>
       </div>
 
       <button 
-        class="pagination-btn" 
+        class="px-4 py-2 border rounded-lg transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         (click)="onPageChange(currentPage + 1)"
         [disabled]="currentPage === totalPages - 1">
         Próxima
       </button>
     </div>
   `,
-  styles: [`
-    .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin: 24px 0;
-    }
-
-    .pagination-btn {
-      padding: 8px 16px;
-      border: 1px solid #ddd;
-      background: white;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .pagination-btn:hover:not(:disabled) {
-      background: #f0f0f0;
-      border-color: #999;
-    }
-
-    .pagination-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .pagination-btn.active {
-      background: #3498db;
-      color: white;
-      border-color: #3498db;
-    }
-
-    .pagination-numbers {
-      display: flex;
-      gap: 4px;
-    }
-
-    .page-number {
-      min-width: 40px;
-    }
-  `]
+  styles: []
 })
 export class PaginationComponent {
   @Input() currentPage = 0;

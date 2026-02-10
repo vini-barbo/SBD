@@ -1,47 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MenubarModule } from 'primeng/menubar';
+import { BadgeModule } from 'primeng/badge';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../core/services/auth.service';
 import { CartService } from '../../core/services/cart.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MenubarModule, BadgeModule, AvatarModule, ButtonModule],
   template: `
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-5 py-4">
-        <div class="flex justify-between items-center">
-          <a routerLink="/" class="text-2xl font-bold text-primary-500">SBD Store</a>
+    <p-menubar [model]="items" styleClass="sticky top-0 z-50">
+      <ng-template pTemplate="start">
+        <a routerLink="/" class="text-2xl font-bold text-primary no-underline">
+          <i class="pi pi-shopping-bag mr-2"></i>SBD Store
+        </a>
+      </ng-template>
+      
+      <ng-template pTemplate="end">
+        <div class="flex align-items-center gap-3">
+          <a routerLink="/cart" class="p-button p-button-text p-button-plain relative" pButton>
+            <i class="pi pi-shopping-cart text-xl" [pBadge]="cartItemCount > 0 ? cartItemCount.toString() : ''" badgeSeverity="danger"></i>
+          </a>
           
-          <div class="flex gap-6 items-center">
-            <a routerLink="/catalog" routerLinkActive="text-primary-500" class="font-medium text-gray-700 hover:text-primary-500 transition-colors">Produtos</a>
-            <a routerLink="/cart" class="relative font-medium text-gray-700 hover:text-primary-500 transition-colors">
-              🛒 Carrinho
-              <span *ngIf="cartItemCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-0.5 text-xs">
-                {{ cartItemCount }}
-              </span>
-            </a>
-            
-            <div *ngIf="isAuthenticated; else guestLinks" class="flex gap-6 items-center">
-              <a routerLink="/orders" routerLinkActive="text-primary-500" class="font-medium text-gray-700 hover:text-primary-500 transition-colors">Meus Pedidos</a>
-              <a routerLink="/profile" routerLinkActive="text-primary-500" class="font-medium text-gray-700 hover:text-primary-500 transition-colors">Perfil</a>
-              <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="text-primary-500" class="font-medium text-gray-700 hover:text-primary-500 transition-colors">Admin</a>
-              <button (click)="logout()" class="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">Sair</button>
-            </div>
-            
-            <ng-template #guestLinks>
-              <a routerLink="/auth/login" routerLinkActive="text-primary-500" class="font-medium text-gray-700 hover:text-primary-500 transition-colors">Entrar</a>
-              <a routerLink="/auth/register" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">Cadastrar</a>
-            </ng-template>
-          </div>
+          <ng-container *ngIf="isAuthenticated; else guestButtons">
+            <p-avatar icon="pi pi-user" shape="circle" styleClass="cursor-pointer" (click)="goToProfile()"></p-avatar>
+            <p-button label="Sair" icon="pi pi-sign-out" (onClick)="logout()" severity="secondary" [outlined]="true"></p-button>
+          </ng-container>
+          
+          <ng-template #guestButtons>
+            <p-button label="Entrar" icon="pi pi-sign-in" routerLink="/auth/login" [outlined]="true" severity="secondary"></p-button>
+            <p-button label="Cadastrar" icon="pi pi-user-plus" routerLink="/auth/register"></p-button>
+          </ng-template>
         </div>
-      </div>
-    </nav>
+      </ng-template>
+    </p-menubar>
   `,
-  styles: []
+  styles: [`
+    :host ::ng-deep {
+      .p-menubar {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+      }
+      
+      .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
+        padding: 0.75rem 1rem;
+      }
+    }
+  `]
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  items: MenuItem[] = [];
+
   get isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
@@ -56,11 +72,53 @@ export class NavbarComponent {
 
   constructor(
     private authService: AuthService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.buildMenu();
+  }
+
+  buildMenu(): void {
+    this.items = [
+      {
+        label: 'Produtos',
+        icon: 'pi pi-th-large',
+        routerLink: '/catalog'
+      }
+    ];
+
+    if (this.isAuthenticated) {
+      this.items.push(
+        {
+          label: 'Meus Pedidos',
+          icon: 'pi pi-list',
+          routerLink: '/orders'
+        },
+        {
+          label: 'Perfil',
+          icon: 'pi pi-user',
+          routerLink: '/profile'
+        }
+      );
+
+      if (this.isAdmin) {
+        this.items.push({
+          label: 'Admin',
+          icon: 'pi pi-cog',
+          routerLink: '/admin'
+        });
+      }
+    }
+  }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
 
   logout(): void {
     this.authService.logout();
-    window.location.href = '/auth/login';
+    this.router.navigate(['/auth/login']);
   }
 }

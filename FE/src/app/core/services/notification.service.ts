@@ -1,74 +1,48 @@
 import { Injectable } from '@angular/core';
-
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
-
-export interface Notification {
-  type: NotificationType;
-  message: string;
-  duration?: number;
-}
+import { MessageService } from 'primeng/api';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
   
-  success(message: string, duration: number = 3000): void {
-    this.show({ type: 'success', message, duration });
+  constructor(private messageService: MessageService) {}
+
+  success(message: string, detail?: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sucesso',
+      detail: detail || message,
+      life: 3000
+    });
   }
 
-  error(message: string, duration: number = 5000): void {
-    this.show({ type: 'error', message, duration });
+  error(message: string, detail?: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erro',
+      detail: detail || message,
+      life: 5000
+    });
   }
 
-  warning(message: string, duration: number = 4000): void {
-    this.show({ type: 'warning', message, duration });
+  warning(message: string, detail?: string): void {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Atenção',
+      detail: detail || message,
+      life: 4000
+    });
   }
 
-  info(message: string, duration: number = 3000): void {
-    this.show({ type: 'info', message, duration });
+  info(message: string, detail?: string): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Informação',
+      detail: detail || message,
+      life: 3000
+    });
   }
 
-  private show(notification: Notification): void {
-    // Implementação simples com console.log
-    // Em produção, usar biblioteca como Angular Material Snackbar ou NgxToastr
-    const prefix = `[${notification.type.toUpperCase()}]`;
-    console.log(`${prefix} ${notification.message}`);
-    
-    // Adicionar notificação visual básica
-    this.showBasicNotification(notification);
-  }
-
-  private showBasicNotification(notification: Notification): void {
-    const container = document.createElement('div');
-    container.className = `notification notification-${notification.type}`;
-    container.textContent = notification.message;
-    container.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 16px 24px;
-      border-radius: 4px;
-      color: white;
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-      animation: slideIn 0.3s ease-out;
-      ${this.getNotificationStyles(notification.type)}
-    `;
-
-    document.body.appendChild(container);
-
-    setTimeout(() => {
-      container.style.animation = 'slideOut 0.3s ease-out';
-      setTimeout(() => document.body.removeChild(container), 300);
-    }, notification.duration || 3000);
-  }
-
-  private getNotificationStyles(type: NotificationType): string {
-    const styles: Record<NotificationType, string> = {
-      success: 'background-color: #4caf50;',
-      error: 'background-color: #f44336;',
-      warning: 'background-color: #ff9800;',
-      info: 'background-color: #2196f3;'
-    };
-    return styles[type];
+  clear(): void {
+    this.messageService.clear();
   }
 }

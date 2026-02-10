@@ -2,14 +2,48 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputMaskModule } from 'primeng/inputmask';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
+import { DividerModule } from 'primeng/divider';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './register.component.html'
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterModule,
+    CardModule,
+    InputTextModule,
+    InputMaskModule,
+    PasswordModule,
+    ButtonModule,
+    MessageModule,
+    DividerModule
+  ],
+  templateUrl: './register.component.html',
+  styles: [`
+    :host ::ng-deep {
+      .register-card {
+        width: 100%;
+        max-width: 500px;
+      }
+      
+      .p-password {
+        width: 100%;
+      }
+      
+      .p-password input {
+        width: 100%;
+      }
+    }
+  `]
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;

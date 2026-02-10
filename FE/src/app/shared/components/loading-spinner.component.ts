@@ -1,17 +1,46 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BlockUIModule } from 'primeng/blockui';
 
 @Component({
   selector: 'app-loading-spinner',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProgressSpinnerModule, BlockUIModule],
   template: `
-    <div *ngIf="loading" class="fixed inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-[9999]">
-      <div class="w-12 h-12 border-4 border-gray-200 border-t-primary-500 rounded-full animate-spin"></div>
-      <p *ngIf="message" class="text-white mt-4 text-base">{{ message }}</p>
-    </div>
+    <p-blockUI [blocked]="loading" styleClass="custom-blocker">
+      <div class="flex flex-column align-items-center justify-content-center" style="height: 100vh;">
+        <p-progressSpinner 
+          styleClass="custom-spinner"
+          strokeWidth="4"
+          animationDuration="1s">
+        </p-progressSpinner>
+        <p *ngIf="message" class="text-white mt-4 text-lg font-medium">{{ message }}</p>
+      </div>
+    </p-blockUI>
   `,
-  styles: []
+  styles: [`
+    :host ::ng-deep {
+      .custom-blocker {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+      
+      .custom-spinner {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .custom-spinner .p-progress-spinner-circle {
+        stroke: var(--primary-color);
+      }
+    }
+  `]
 })
 export class LoadingSpinnerComponent {
   @Input() loading = false;

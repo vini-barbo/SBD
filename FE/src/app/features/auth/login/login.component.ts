@@ -2,14 +2,46 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
+import { DividerModule } from 'primeng/divider';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './login.component.html'
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterModule,
+    CardModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    MessageModule,
+    DividerModule
+  ],
+  templateUrl: './login.component.html',
+  styles: [`
+    :host ::ng-deep {
+      .login-card {
+        width: 100%;
+        max-width: 450px;
+      }
+      
+      .p-password {
+        width: 100%;
+      }
+      
+      .p-password input {
+        width: 100%;
+      }
+    }
+  `]
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

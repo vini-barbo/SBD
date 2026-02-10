@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { OrderService } from '../../../core/services/order.service';
 import { Order } from '../../../core/models/order.model';
 import { CurrencyPipe } from '../../../shared/pipes/currency.pipe';
-import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { PaginationComponent } from '../../../shared/components/pagination.component';
 
 @Component({
   selector: 'app-order-list',
@@ -81,10 +81,10 @@ export class OrderListComponent implements OnInit {
   }
 
   loadOrders(): void {
-    this.orderService.getUserOrders(this.currentPage, 10).subscribe({
-      next: (response) => {
-        this.orders = response.content;
-        this.totalPages = response.totalPages;
+    this.orderService.getOrders(this.currentPage, 10).subscribe({
+      next: (response: any) => {
+        this.orders = response.content || [];
+        this.totalPages = response.totalPages || 1;
       }
     });
   }

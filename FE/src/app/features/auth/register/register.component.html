@@ -1,114 +1,87 @@
-<div class="flex align-items-center justify-content-center" style="min-height: 100vh; background: linear-gradient(135deg, var(--primary-color) 0%, #6366f1 100%); padding: 2rem;">
-  <p-card styleClass="register-card shadow-4">
-    <ng-template pTemplate="header">
-      <div class="text-center pt-4">
-        <i class="pi pi-user-plus text-6xl" style="color: var(--primary-color);"></i>
-      </div>
-    </ng-template>
-    
-    <ng-template pTemplate="title">
-      <h2 class="text-center m-0">Criar Conta</h2>
-    </ng-template>
-    
-    <ng-template pTemplate="subtitle">
-      <p class="text-center text-color-secondary m-0">Preencha os dados para criar sua conta</p>
-    </ng-template>
-    
-    <ng-template pTemplate="content">
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-3">
-        <div class="flex flex-column gap-2">
-          <label for="name" class="font-medium">Nome Completo</label>
-          <input 
-            pInputText 
-            id="name" 
-            type="text"
-            formControlName="name" 
-            placeholder="João Silva"
-            [class.ng-invalid]="name?.invalid && name?.touched"
-            [class.ng-dirty]="name?.touched" />
-          <small *ngIf="name?.invalid && name?.touched" class="p-error">
-            <span *ngIf="name?.errors?.['required']">Nome é obrigatório</span>
-            <span *ngIf="name?.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres</span>
-          </small>
-        </div>
+<div class="flex align-items-center justify-content-center"
+    style="min-height: 100vh; background: linear-gradient(135deg, var(--primary-color) 0%, #6366f1 100%); padding: 2rem;">
+    <p-card styleClass="register-card shadow-4">
+        <ng-template pTemplate="header">
+            <div class="text-center pt-4">
+                <i class="pi pi-user-plus text-6xl" style="color: var(--primary-color);"></i>
+            </div>
+        </ng-template>
 
-        <div class="flex flex-column gap-2">
-          <label for="email" class="font-medium">Email</label>
-          <input 
-            pInputText 
-            id="email" 
-            type="email"
-            formControlName="email" 
-            placeholder="seu@email.com"
-            [class.ng-invalid]="email?.invalid && email?.touched"
-            [class.ng-dirty]="email?.touched" />
-          <small *ngIf="email?.invalid && email?.touched" class="p-error">
-            <span *ngIf="email?.errors?.['required']">Email é obrigatório</span>
-            <span *ngIf="email?.errors?.['email']">Email inválido</span>
-          </small>
-        </div>
+        <ng-template pTemplate="title">
+            <h2 class="text-center m-0">Criar Conta</h2>
+        </ng-template>
 
-        <div class="flex flex-column gap-2">
-          <label for="phone" class="font-medium">Telefone <span class="text-color-secondary">(opcional)</span></label>
-          <p-inputMask 
-            id="phone"
-            formControlName="phone" 
-            mask="(99) 99999-9999"
-            placeholder="(11) 98765-4321">
-          </p-inputMask>
-        </div>
+        <ng-template pTemplate="subtitle">
+            <p class="text-center text-color-secondary m-0">Preencha os dados para criar sua conta</p>
+        </ng-template>
 
-        <div class="flex flex-column gap-2">
-          <label for="password" class="font-medium">Senha</label>
-          <p-password 
-            formControlName="password"
-            [toggleMask]="true"
-            [feedback]="true"
-            placeholder="••••••••"
-            promptLabel="Digite uma senha"
-            weakLabel="Fraca"
-            mediumLabel="Média"
-            strongLabel="Forte"
-            [inputStyleClass]="password?.invalid && password?.touched ? 'ng-invalid ng-dirty' : ''">
-          </p-password>
-          <small *ngIf="password?.invalid && password?.touched" class="p-error">
-            <span *ngIf="password?.errors?.['required']">Senha é obrigatória</span>
-            <span *ngIf="password?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
-          </small>
-        </div>
+        <ng-template pTemplate="content">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-3">
+                <div class="flex flex-column gap-2">
+                    <label for="name" class="font-medium">Nome Completo</label>
+                    <input pInputText id="name" type="text" formControlName="name" placeholder="João Silva"
+                        [class.ng-invalid]="name?.invalid && name?.touched" [class.ng-dirty]="name?.touched" />
+                    <small *ngIf="name?.invalid && name?.touched" class="p-error">
+                        <span *ngIf="name?.errors?.['required']">Nome é obrigatório</span>
+                        <span *ngIf="name?.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres</span>
+                    </small>
+                </div>
 
-        <div class="flex flex-column gap-2">
-          <label for="confirmPassword" class="font-medium">Confirmar Senha</label>
-          <p-password 
-            formControlName="confirmPassword"
-            [toggleMask]="true"
-            [feedback]="false"
-            placeholder="••••••••"
-            [inputStyleClass]="confirmPassword?.invalid && confirmPassword?.touched ? 'ng-invalid ng-dirty' : ''">
-          </p-password>
-          <small *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="p-error">
-            <span *ngIf="confirmPassword?.errors?.['required']">Confirmação de senha é obrigatória</span>
-            <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">As senhas não coincidem</span>
-          </small>
-        </div>
+                <div class="flex flex-column gap-2">
+                    <label for="email" class="font-medium">Email</label>
+                    <input pInputText id="email" type="email" formControlName="email" placeholder="seu@email.com"
+                        [class.ng-invalid]="email?.invalid && email?.touched" [class.ng-dirty]="email?.touched" />
+                    <small *ngIf="email?.invalid && email?.touched" class="p-error">
+                        <span *ngIf="email?.errors?.['required']">Email é obrigatório</span>
+                        <span *ngIf="email?.errors?.['email']">Email inválido</span>
+                    </small>
+                </div>
 
-        <p-button 
-          type="submit" 
-          label="{{ loading ? 'Criando conta...' : 'Criar Conta' }}"
-          icon="pi pi-user-plus"
-          [loading]="loading"
-          [disabled]="loading"
-          styleClass="w-full mt-2">
-        </p-button>
-      </form>
-    </ng-template>
-    
-    <ng-template pTemplate="footer">
-      <p-divider></p-divider>
-      <p class="text-center text-color-secondary m-0">
-        Já tem uma conta? 
-        <a routerLink="/auth/login" class="font-medium no-underline" style="color: var(--primary-color);">Entrar</a>
-      </p>
-    </ng-template>
-  </p-card>
+                <div class="flex flex-column gap-2">
+                    <label for="phone" class="font-medium">Telefone <span
+                            class="text-color-secondary">(opcional)</span></label>
+                    <p-inputMask id="phone" formControlName="phone" mask="(99) 99999-9999"
+                        placeholder="(11) 98765-4321">
+                    </p-inputMask>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label for="password" class="font-medium">Senha</label>
+                    <p-password formControlName="password" [toggleMask]="true" [feedback]="true" placeholder="••••••••"
+                        promptLabel="Digite uma senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte"
+                        [inputStyleClass]="password?.invalid && password?.touched ? 'ng-invalid ng-dirty' : ''">
+                    </p-password>
+                    <small *ngIf="password?.invalid && password?.touched" class="p-error">
+                        <span *ngIf="password?.errors?.['required']">Senha é obrigatória</span>
+                        <span *ngIf="password?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+                    </small>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label for="confirmPassword" class="font-medium">Confirmar Senha</label>
+                    <p-password formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
+                        placeholder="••••••••"
+                        [inputStyleClass]="confirmPassword?.invalid && confirmPassword?.touched ? 'ng-invalid ng-dirty' : ''">
+                    </p-password>
+                    <small *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="p-error">
+                        <span *ngIf="confirmPassword?.errors?.['required']">Confirmação de senha é obrigatória</span>
+                        <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">As senhas não coincidem</span>
+                    </small>
+                </div>
+
+                <p-button type="submit" label="{{ loading ? 'Criando conta...' : 'Criar Conta' }}"
+                    icon="pi pi-user-plus" [loading]="loading" [disabled]="loading" styleClass="w-full mt-2">
+                </p-button>
+            </form>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <p-divider></p-divider>
+            <p class="text-center text-color-secondary m-0">
+                Já tem uma conta?
+                <a routerLink="/auth/login" class="font-medium no-underline"
+                    style="color: var(--primary-color);">Entrar</a>
+            </p>
+        </ng-template>
+    </p-card>
 </div>

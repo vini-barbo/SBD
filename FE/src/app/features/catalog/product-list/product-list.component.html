@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <app-pagination *ngIf="page && page.totalPages > 1" [currentPage]="page.number" [totalPages]="page.totalPages"
-        (pageChange)="onPageChange($event)">
+    <app-pagination *ngIf="page && page.totalElements > 0" [currentPage]="page.number"
+        [totalElements]="page.totalElements" [pageSize]="page.size" (pageChange)="onPageChange($event)">
     </app-pagination>
 </div>

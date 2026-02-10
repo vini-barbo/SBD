@@ -23,8 +23,10 @@ import { CartService } from '../../core/services/cart.service';
       
       <ng-template pTemplate="end">
         <div class="flex align-items-center gap-3">
-          <a routerLink="/cart" class="p-button p-button-text p-button-plain relative" pButton>
-            <i class="pi pi-shopping-cart text-xl" [pBadge]="cartItemCount > 0 ? cartItemCount.toString() : ''" badgeSeverity="danger"></i>
+          <a routerLink="/cart" class="p-button p-button-text p-button-plain relative" pButton style="position: relative;">
+            <i class="pi pi-shopping-cart text-xl"></i>
+            <p-badge *ngIf="cartItemCount > 0" [value]="cartItemCount.toString()" severity="danger" 
+                     style="position: absolute; top: 0; right: 0;"></p-badge>
           </a>
           
           <ng-container *ngIf="isAuthenticated; else guestButtons">

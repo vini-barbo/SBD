@@ -1,8 +1,5 @@
-/* PrimeNG Theme */
-@import 'primeng/resources/themes/lara-light-blue/theme.css';
-@import 'primeng/resources/primeng.css';
+/* PrimeNG Core CSS (v21+ usa styled mode com Tailwind ou CSS vars) */
 @import 'primeicons/primeicons.css';
-@import 'primeflex/primeflex.css';
 
 /* Global Styles */
 * {
@@ -13,11 +10,42 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: var(--surface-ground);
+  background: #f3f4f6;
 }
 
-/* Custom Theme Variables */
+/* PrimeNG Custom Theme Variables */
 :root {
-  --primary-color: #667eea;
+  --primary-50: #f5f7ff;
+  --primary-100: #ebf0ff;
+  --primary-200: #d6e0ff;
+  --primary-300: #b3c5ff;
+  --primary-400: #8099ff;
+  --primary-500: #667eea;
+  --primary-600: #5566d6;
+  --primary-700: #4451b8;
+  --primary-800: #363f94;
+  --primary-900: #2b3477;
+  
+  --surface-0: #ffffff;
+  --surface-50: #f9fafb;
+  --surface-100: #f3f4f6;
+  --surface-200: #e5e7eb;
+  --surface-300: #d1d5db;
+  --surface-400: #9ca3af;
+  --surface-500: #6b7280;
+  --surface-600: #4b5563;
+  --surface-700: #374151;
+  --surface-800: #1f2937;
+  --surface-900: #111827;
+  
+  --text-color: #374151;
+  --text-color-secondary: #6b7280;
+  --surface-ground: #f9fafb;
+  --surface-section: #ffffff;
+  --surface-card: #ffffff;
+  --surface-overlay: #ffffff;
+  --surface-border: #e5e7eb;
+  --primary-color: var(--primary-500);
   --primary-color-text: #ffffff;
+  --border-radius: 6px;
 }

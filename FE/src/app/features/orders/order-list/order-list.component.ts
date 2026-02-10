@@ -62,7 +62,8 @@ import { PaginationComponent } from '../../../shared/components/pagination.compo
 
         <app-pagination 
           [currentPage]="currentPage"
-          [totalPages]="totalPages"
+          [totalElements]="totalElements"
+          [pageSize]="pageSize"
           (pageChange)="onPageChange($event)">
         </app-pagination>
       </div>
@@ -72,7 +73,8 @@ import { PaginationComponent } from '../../../shared/components/pagination.compo
 export class OrderListComponent implements OnInit {
   orders: Order[] = [];
   currentPage = 0;
-  totalPages = 1;
+  totalElements = 0;
+  pageSize = 10;
 
   constructor(private orderService: OrderService) {}
 
@@ -81,10 +83,10 @@ export class OrderListComponent implements OnInit {
   }
 
   loadOrders(): void {
-    this.orderService.getOrders(this.currentPage, 10).subscribe({
+    this.orderService.getOrders(this.currentPage, this.pageSize).subscribe({
       next: (response: any) => {
         this.orders = response.content || [];
-        this.totalPages = response.totalPages || 1;
+        this.totalElements = response.totalElements || 0;
       }
     });
   }

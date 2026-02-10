@@ -451,7 +451,473 @@ AdminModule (lazy, protected by AdminGuard)
 
 ---
 
-## 🔧 Serviços
+## � Mappers
+
+### Conceito
+**Mappers** são responsáveis por transformar dados entre diferentes formatos:
+- **API → Frontend**: Converter DTOs da API para modelos do Angular
+- **Frontend → API**: Converter modelos do Angular para DTOs da API
+- **Normalização**: Transformar strings de data, formatar valores, etc.
+
+### Estrutura de Mappers
+
+```
+src/app/core/mappers/
+├── user.mapper.ts
+├── product.mapper.ts
+├── category.mapper.ts
+├── order.mapper.ts
+├── address.mapper.ts
+├── cart.mapper.ts
+└── base.mapper.ts
+```
+
+### Base Mapper
+**Arquivo:** `core/mappers/base.mapper.ts`
+
+```typescript
+export abstract class BaseMapper<T, D> {
+  abstract toModel(dto: D): T;
+  abstract toDto(model: T): D;
+  
+  toModelArray(dtos: D[]): T[] {
+    return dtos.map(dto => this.toModel(dto));
+  }
+  
+  toDtoArray(models: T[]): D[] {
+    return models.map(model => this.toDto(model));
+  }
+}
+```
+
+### Mappers Específicos
+
+#### 1. UserMapper
+**Arquivo:** `core/mappers/user.mapper.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { User, UserRequest } from '@models/user.model';
+
+@Injectable({ providedIn: 'root' })
+export class UserMapper extends BaseMapper<User, any> {
+  
+  toModel(dto: any): User {
+    return {
+      id: dto.id,
+      name: dto.name,
+      email: dto.email,
+      phone: dto.phone,
+      createdAt: dto.createdAt ? new Date(dto.createdAt) : new Date()
+    };
+  }
+  
+  toDto(model: User): any {
+    return {
+      id: model.id,
+      name: model.name,
+      email: model.email,
+      phone: model.phone,
+      createdAt: model.createdAt.toISOString()
+    };
+  }
+  
+  toUserRequest(formValue: any): UserRequest {
+    return {
+      name: formValue.name,
+      email: formValue.email,
+      password: formValue.password,
+      phone: formValue.phone || null
+    };
+  }
+}
+```
+
+#### 2. ProductMapper
+**Arquivo:** `core/mappers/product.mapper.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Product, ProductVariant, ProductImage } from '@models/product.model';
+import { CategoryMapper } from './category.mapper';
+
+@Injectable({ providedIn: 'root' })
+export class ProductMapper extends BaseMapper<Product, any> {
+  
+  constructor(private categoryMapper: CategoryMapper) {
+    super();
+  }
+  
+  toModel(dto: any): Product {
+    return {
+      id: dto.id,
+      name: dto.name,
+      description: dto.description,
+      basePrice: dto.basePrice,
+      isActive: dto.isActive,
+      createdAt: dto.createdAt ? new Date(dto.createdAt) : new Date(),
+      category: dto.category ? this.categoryMapper.toModel(dto.category) : null,
+      variants: dto.variants?.map(v => this.toVariantModel(v)) || [],
+      images: dto.images?.map(i => this.toImageModel(i)) || []
+    };
+  }
+  
+  toDto(model: Product): any {
+    return {
+      id: model.id,
+      name: model.name,
+      description: model.description,
+      basePrice: model.basePrice,
+      categoryId: model.category?.id,
+      isActive: model.isActive
+    };
+  }
+  
+  toVariantModel(dto: any): ProductVariant {
+    return {
+      id: dto.id,
+      productId: dto.productId,
+      size: dto.size,
+      color: dto.color,
+      sku: dto.sku,
+      price: dto.price,
+      stockQuantity: dto.stockQuantity || 0
+    };
+  }
+  
+  toImageModel(dto: any): ProductImage {
+    return {
+      id: dto.id,
+      productId: dto.productId,
+      imageUrl: dto.imageUrl,
+      isPrimary: dto.isPrimary
+    };
+  }
+  
+  toCreateDto(formValue: any): any {
+    return {
+      name: formValue.name,
+      description: formValue.description,
+      basePrice: formValue.basePrice,
+      categoryId: formValue.categoryId,
+      isActive: formValue.isActive ?? true
+    };
+  }
+}
+```
+
+#### 3. CategoryMapper
+**Arquivo:** `core/mappers/category.mapper.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Category } from '@models/category.model';
+
+@Injectable({ providedIn: 'root' })
+export class CategoryMapper extends BaseMapper<Category, any> {
+  
+  toModel(dto: any): Category {
+    return {
+      id: dto.id,
+      name: dto.name,
+      parentId: dto.parentId,
+      subcategories: dto.subcategories?.map(sub => this.toModel(sub)) || []
+    };
+  }
+  
+  toDto(model: Category): any {
+    return {
+      id: model.id,
+      name: model.name,
+      parentId: model.parentId
+    };
+  }
+  
+  toCategoryTree(dto: any): Category {
+    return this.toModel(dto);
+  }
+}
+```
+
+#### 4. OrderMapper
+**Arquivo:** `core/mappers/order.mapper.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Order, OrderItem, Payment, Shipment } from '@models/order.model';
+import { UserMapper } from './user.mapper';
+
+@Injectable({ providedIn: 'root' })
+export class OrderMapper extends BaseMapper<Order, any> {
+  
+  constructor(private userMapper: UserMapper) {
+    super();
+  }
+  
+  toModel(dto: any): Order {
+    return {
+      id: dto.id,
+      user: dto.user ? this.userMapper.toModel(dto.user) : null,
+      status: dto.status,
+      totalAmount: dto.totalAmount,
+      createdAt: dto.createdAt ? new Date(dto.createdAt) : new Date(),
+      items: dto.items?.map(item => this.toOrderItemModel(item)) || [],
+      payment: dto.payment ? this.toPaymentModel(dto.payment) : null,
+      shipment: dto.shipment ? this.toShipmentModel(dto.shipment) : null
+    };
+  }
+  
+  toDto(model: Order): any {
+    return {
+      userId: model.user?.id,
+      items: model.items.map(item => ({
+        productVariantId: item.productVariantId,
+        quantity: item.quantity
+      })),
+      addressId: model.shipment?.addressId,
+      paymentMethod: model.payment?.paymentMethod
+    };
+  }
+  
+  toOrderItemModel(dto: any): OrderItem {
+    return {
+      id: dto.id,
+      productVariantId: dto.productVariantId,
+      productName: dto.productName,
+      sku: dto.sku,
+      quantity: dto.quantity,
+      price: dto.price,
+      subtotal: dto.subtotal
+    };
+  }
+  
+  toPaymentModel(dto: any): Payment {
+    return {
+      id: dto.id,
+      paymentMethod: dto.paymentMethod,
+      status: dto.status,
+      paidAt: dto.paidAt ? new Date(dto.paidAt) : null
+    };
+  }
+  
+  toShipmentModel(dto: any): Shipment {
+    return {
+      id: dto.id,
+      addressId: dto.addressId,
+      trackingCode: dto.trackingCode,
+      shippedAt: dto.shippedAt ? new Date(dto.shippedAt) : null,
+      deliveredAt: dto.deliveredAt ? new Date(dto.deliveredAt) : null
+    };
+  }
+  
+  toCreateOrderDto(cart: any, addressId: string, paymentMethod: string): any {
+    return {
+      userId: cart.userId,
+      items: cart.items.map(item => ({
+        productVariantId: item.variant.id,
+        quantity: item.quantity
+      })),
+      addressId: addressId,
+      paymentMethod: paymentMethod
+    };
+  }
+}
+```
+
+#### 5. AddressMapper
+**Arquivo:** `core/mappers/address.mapper.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Address } from '@models/address.model';
+
+@Injectable({ providedIn: 'root' })
+export class AddressMapper extends BaseMapper<Address, any> {
+  
+  toModel(dto: any): Address {
+    return {
+      id: dto.id,
+      userId: dto.userId,
+      street: dto.street,
+      city: dto.city,
+      state: dto.state,
+      country: dto.country,
+      zipCode: dto.zipCode,
+      isDefault: dto.isDefault
+    };
+  }
+  
+  toDto(model: Address): any {
+    return {
+      id: model.id,
+      userId: model.userId,
+      street: model.street,
+      city: model.city,
+      state: model.state,
+      country: model.country,
+      zipCode: model.zipCode,
+      isDefault: model.isDefault
+    };
+  }
+  
+  toCreateDto(formValue: any, userId: string): any {
+    return {
+      userId: userId,
+      street: formValue.street,
+      city: formValue.city,
+      state: formValue.state,
+      country: formValue.country || 'Brasil',
+      zipCode: formValue.zipCode,
+      isDefault: formValue.isDefault ?? false
+    };
+  }
+}
+```
+
+#### 6. PaginationMapper
+**Arquivo:** `core/mappers/pagination.mapper.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Page } from '@models/pagination.model';
+
+@Injectable({ providedIn: 'root' })
+export class PaginationMapper {
+  
+  toPageModel<T>(dto: any, itemMapper: (item: any) => T): Page<T> {
+    return {
+      content: dto.content?.map(itemMapper) || [],
+      pageable: dto.pageable,
+      totalPages: dto.totalPages,
+      totalElements: dto.totalElements,
+      last: dto.last,
+      first: dto.first,
+      size: dto.size,
+      number: dto.number
+    };
+  }
+}
+```
+
+### Uso dos Mappers nos Serviços
+
+#### Exemplo: ProductService com Mapper
+
+```typescript
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Product } from '@models/product.model';
+import { Page } from '@models/pagination.model';
+import { ProductMapper } from '@core/mappers/product.mapper';
+import { PaginationMapper } from '@core/mappers/pagination.mapper';
+import { environment } from '@env/environment';
+
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  private apiUrl = `${environment.apiUrl}/products`;
+  
+  constructor(
+    private http: HttpClient,
+    private productMapper: ProductMapper,
+    private paginationMapper: PaginationMapper
+  ) {}
+  
+  getProducts(page = 0, size = 20, sort?: string): Observable<Page<Product>> {
+    const params = { page: page.toString(), size: size.toString() };
+    if (sort) params['sort'] = sort;
+    
+    return this.http.get<any>(this.apiUrl, { params }).pipe(
+      map(dto => this.paginationMapper.toPageModel(dto, 
+        item => this.productMapper.toModel(item)
+      ))
+    );
+  }
+  
+  getProductById(id: string): Observable<Product> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
+      map(dto => this.productMapper.toModel(dto))
+    );
+  }
+  
+  createProduct(product: any): Observable<Product> {
+    const dto = this.productMapper.toCreateDto(product);
+    return this.http.post<any>(this.apiUrl, dto).pipe(
+      map(response => this.productMapper.toModel(response))
+    );
+  }
+  
+  updateProduct(id: string, product: Product): Observable<Product> {
+    const dto = this.productMapper.toDto(product);
+    return this.http.put<any>(`${this.apiUrl}/${id}`, dto).pipe(
+      map(response => this.productMapper.toModel(response))
+    );
+  }
+}
+```
+
+### Benefícios dos Mappers
+
+✅ **Separação de Responsabilidades**
+- Serviços focam em lógica de negócio
+- Mappers focam em transformação de dados
+
+✅ **Reusabilidade**
+- Mesma lógica de conversão em múltiplos lugares
+- DRY (Don't Repeat Yourself)
+
+✅ **Manutenibilidade**
+- Mudanças na API afetam apenas os mappers
+- Facilita adaptação a breaking changes
+
+✅ **Type Safety**
+- TypeScript garante tipos corretos
+- Intellisense funciona perfeitamente
+
+✅ **Testabilidade**
+- Fácil criar testes unitários para mappers
+- Isola lógica de transformação
+
+### Organização no CoreModule
+
+```typescript
+// core/core.module.ts
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Mappers
+import { UserMapper } from './mappers/user.mapper';
+import { ProductMapper } from './mappers/product.mapper';
+import { CategoryMapper } from './mappers/category.mapper';
+import { OrderMapper } from './mappers/order.mapper';
+import { AddressMapper } from './mappers/address.mapper';
+import { PaginationMapper } from './mappers/pagination.mapper';
+
+@NgModule({
+  imports: [CommonModule],
+  providers: [
+    // Mappers
+    UserMapper,
+    ProductMapper,
+    CategoryMapper,
+    OrderMapper,
+    AddressMapper,
+    PaginationMapper
+  ]
+})
+export class CoreModule {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+    if (parentModule) {
+      throw new Error('CoreModule is already loaded. Import it in AppModule only');
+    }
+  }
+}
+```
+
+---
+
+## �🔧 Serviços
 
 ### Core Services
 

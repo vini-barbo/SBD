@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: sbd-api
+
+  # Configuração do Banco de Dados
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sbd_db}
+    username: ${DB_USER:sbd_user}
+    password: ${DB_PASSWORD:sbd_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+
+  # Configuração JPA/Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: none # create, create-drop, validate, update, none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Para MySQL: org.hibernate.dialect.MySQL8Dialect
+        # Para H2: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+
+  # H2 Console (para desenvolvimento)
+  h2:
+    console:
+      enabled: false # Mude para true se usar H2
+
+  # Configuração Flyway
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    clean-disabled: false
+
+# Configuração do Servidor
+server:
+  port: ${SERVER_PORT:8099}
+  servlet:
+    context-path: ${CONTEXT_PATH:/api}
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+
+# Configuração do Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    disable-swagger-default-url: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.portfolio.sbd: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

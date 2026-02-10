@@ -1,5 +1,17 @@
-/* PrimeNG Core CSS (v21+ usa styled mode com Tailwind ou CSS vars) */
+/* PrimeIcons */
 @import 'primeicons/primeicons.css';
+
+/* PrimeFlex Utility Classes */
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
 
 /* Global Styles */
 * {
@@ -10,42 +22,205 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: #f3f4f6;
+  background: #f9fafb;
+  color: #374151;
+  margin: 0;
+  padding: 0;
 }
 
-/* PrimeNG Custom Theme Variables */
-:root {
-  --primary-50: #f5f7ff;
-  --primary-100: #ebf0ff;
-  --primary-200: #d6e0ff;
-  --primary-300: #b3c5ff;
-  --primary-400: #8099ff;
-  --primary-500: #667eea;
-  --primary-600: #5566d6;
-  --primary-700: #4451b8;
-  --primary-800: #363f94;
-  --primary-900: #2b3477;
-  
-  --surface-0: #ffffff;
-  --surface-50: #f9fafb;
-  --surface-100: #f3f4f6;
-  --surface-200: #e5e7eb;
-  --surface-300: #d1d5db;
-  --surface-400: #9ca3af;
-  --surface-500: #6b7280;
-  --surface-600: #4b5563;
-  --surface-700: #374151;
-  --surface-800: #1f2937;
-  --surface-900: #111827;
-  
-  --text-color: #374151;
-  --text-color-secondary: #6b7280;
-  --surface-ground: #f9fafb;
-  --surface-section: #ffffff;
-  --surface-card: #ffffff;
-  --surface-overlay: #ffffff;
-  --surface-border: #e5e7eb;
-  --primary-color: var(--primary-500);
-  --primary-color-text: #ffffff;
-  --border-radius: 6px;
+/* PrimeNG Design Tokens - Tema Aura Light Blue */
+@layer primeng {
+  :root {
+    /* Primary Colors */
+    --p-primary-50: #f5f7ff;
+    --p-primary-100: #ebf0ff;
+    --p-primary-200: #d6e0ff;
+    --p-primary-300: #b3c5ff;
+    --p-primary-400: #8099ff;
+    --p-primary-500: #667eea;
+    --p-primary-600: #5566d6;
+    --p-primary-700: #4451b8;
+    --p-primary-800: #363f94;
+    --p-primary-900: #2b3477;
+    --p-primary-950: #1a1f4a;
+    
+    /* Surface Colors */
+    --p-surface-0: #ffffff;
+    --p-surface-50: #f9fafb;
+    --p-surface-100: #f3f4f6;
+    --p-surface-200: #e5e7eb;
+    --p-surface-300: #d1d5db;
+    --p-surface-400: #9ca3af;
+    --p-surface-500: #6b7280;
+    --p-surface-600: #4b5563;
+    --p-surface-700: #374151;
+    --p-surface-800: #1f2937;
+    --p-surface-900: #111827;
+    --p-surface-950: #030712;
+    
+    /* Semantic Colors */
+    --p-content-color: #374151;
+    --p-content-hover-color: #1f2937;
+    --p-content-border-color: #e5e7eb;
+    --p-content-border-radius: 6px;
+    
+    /* Component Variables */
+    --p-text-color: #374151;
+    --p-text-hover-color: #1f2937;
+    --p-text-muted-color: #6b7280;
+    --p-text-hover-muted-color: #4b5563;
+    
+    --p-surface-ground: #f9fafb;
+    --p-surface-section: #ffffff;
+    --p-surface-card: #ffffff;
+    --p-surface-overlay: #ffffff;
+    --p-surface-border: #e5e7eb;
+    --p-surface-hover: #f3f4f6;
+    
+    --p-primary-color: var(--p-primary-500);
+    --p-primary-contrast-color: #ffffff;
+    --p-primary-hover-color: var(--p-primary-600);
+    --p-primary-active-color: var(--p-primary-700);
+    
+    /* Form Controls */
+    --p-form-field-padding-x: 0.75rem;
+    --p-form-field-padding-y: 0.5rem;
+    --p-form-field-border-radius: 6px;
+    --p-form-field-focus-ring-width: 1px;
+    --p-form-field-focus-ring-style: solid;
+    --p-form-field-focus-ring-color: var(--p-primary-500);
+    --p-form-field-focus-ring-offset: 0px;
+    
+    /* Transitions */
+    --p-transition-duration: 0.2s;
+  }
+
+  /* PrimeNG Component Base Styles */
+  .p-component {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+
+  .p-button {
+    background: var(--p-primary-color);
+    color: var(--p-primary-contrast-color);
+    border: 1px solid var(--p-primary-color);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    border-radius: var(--p-content-border-radius);
+    cursor: pointer;
+  }
+
+  .p-button:enabled:hover {
+    background: var(--p-primary-hover-color);
+    border-color: var(--p-primary-hover-color);
+  }
+
+  .p-button:enabled:active {
+    background: var(--p-primary-active-color);
+    border-color: var(--p-primary-active-color);
+  }
+
+  .p-button-outlined {
+    background: transparent;
+    color: var(--p-primary-color);
+    border: 1px solid var(--p-primary-color);
+  }
+
+  .p-button-outlined:enabled:hover {
+    background: var(--p-primary-50);
+  }
+
+  .p-button-secondary {
+    background: var(--p-surface-200);
+    color: var(--p-text-color);
+    border: 1px solid var(--p-surface-300);
+  }
+
+  .p-inputtext {
+    padding: var(--p-form-field-padding-y) var(--p-form-field-padding-x);
+    border: 1px solid var(--p-surface-border);
+    border-radius: var(--p-form-field-border-radius);
+    background: var(--p-surface-0);
+    color: var(--p-text-color);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .p-inputtext:enabled:focus {
+    outline: 0 none;
+    border-color: var(--p-primary-color);
+    box-shadow: 0 0 0 1px var(--p-primary-color);
+  }
+
+  .p-card {
+    background: var(--p-surface-card);
+    border: 1px solid var(--p-surface-border);
+    border-radius: var(--p-content-border-radius);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .p-card .p-card-body {
+    padding: 1.5rem;
+  }
+
+  .p-card .p-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .p-menubar {
+    background: var(--p-surface-0);
+    border: 1px solid var(--p-surface-border);
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+  }
+
+  .p-toast {
+    opacity: 1;
+  }
+
+  .p-toast-message {
+    margin: 0 0 1rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: var(--p-content-border-radius);
+  }
+
+  .p-badge {
+    background: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    border-radius: 10px;
+    padding: 0 0.25rem;
+  }
+
+  .p-password input {
+    width: 100%;
+  }
+
+  .p-paginator {
+    background: var(--p-surface-0);
+    border: 1px solid var(--p-surface-border);
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Utility Classes */
+.text-primary {
+  color: var(--p-primary-color) !important;
+}
+
+.no-underline {
+  text-decoration: none !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }

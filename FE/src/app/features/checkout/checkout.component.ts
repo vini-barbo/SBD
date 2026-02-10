@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { CartService } from '../../../core/services/cart.service';
-import { AddressService } from '../../../core/services/address.service';
-import { OrderService } from '../../../core/services/order.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { Address } from '../../../core/models/address.model';
-import { Cart } from '../../../core/models/cart.model';
-import { CreateOrderDto, OrderItemDto, PaymentMethod } from '../../../core/models/order.model';
-import { CurrencyPipe } from '../../../shared/pipes/currency.pipe';
+import { CartService } from '../../core/services/cart.service';
+import { AddressService } from '../../core/services/address.service';
+import { OrderService } from '../../core/services/order.service';
+import { AuthService } from '../../core/services/auth.service';
+import { Address } from '../../core/models/address.model';
+import { Cart } from '../../core/models/cart.model';
+import { CreateOrderDto, OrderItemDto, PaymentMethod } from '../../core/models/order.model';
+import { CurrencyPipe } from '../../shared/pipes/currency.pipe';
 
 @Component({
   selector: 'app-checkout',

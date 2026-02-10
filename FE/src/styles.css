@@ -1,7 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* PrimeNG Theme */
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
+@import 'primeicons/primeicons.css';
+@import 'primeflex/primeflex.css';
 
+/* Global Styles */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +13,11 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: #f9fafb;
+  background: var(--surface-ground);
 }
 
-@import "tailwindcss";
+/* Custom Theme Variables */
+:root {
+  --primary-color: #667eea;
+  --primary-color-text: #ffffff;
+}

@@ -1,7 +1,8 @@
+/* PrimeNG Theme configurado via providePrimeNG no app.config.ts */
 /* PrimeIcons */
 @import 'primeicons/primeicons.css';
 
-/* PrimeFlex Utility Classes */
+/* Tailwind CSS com layers para integração com PrimeNG */
 @layer tailwind-base, primeng, tailwind-utilities;
 
 @layer tailwind-base {
@@ -26,6 +27,241 @@ body {
   color: #374151;
   margin: 0;
   padding: 0;
+}
+
+/* Estilos complementares para componentes PrimeNG v21 */
+@layer primeng {
+  /* Fix para inputs e form controls */
+  .p-inputtext,
+  .p-inputnumber-input,
+  .p-dropdown,
+  .p-calendar input {
+    width: 100%;
+  }
+
+  .p-password {
+    width: 100%;
+  }
+
+  .p-password input {
+    width: 100%;
+  }
+
+  /* Fix para buttons */
+  .p-button {
+    cursor: pointer;
+  }
+
+  .p-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* Fix para card */
+  .p-card {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  /* Fix para menubar */
+  .p-menubar {
+    border-radius: 0;
+  }
+
+  .p-menubar-root-list {
+    gap: 0.5rem;
+  }
+
+  /* Fix para toast */
+  .p-toast {
+    opacity: 1;
+    z-index: 9999;
+  }
+
+  .p-toast-message {
+    margin: 0 0 1rem 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Fix para badge */
+  .p-badge {
+    min-width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* Fix para avatar */
+  .p-avatar {
+    background-color: #e5e7eb;
+    color: #374151;
+  }
+
+  /* Fix para paginator */
+  .p-paginator {
+    padding: 1rem;
+  }
+
+  /* Fix para divider */
+  .p-divider {
+    margin: 1rem 0;
+  }
+
+  /* Fix para message */
+  .p-message {
+    margin: 0.5rem 0;
+  }
+
+  /* Fix para blockui */
+  .p-blockui {
+    z-index: 9999;
+  }
+
+  .p-component-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Fix para progressSpinner */
+  .p-progress-spinner {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Fix para input errors */
+  .p-inputtext.ng-invalid.ng-dirty {
+    border-color: #ef4444;
+  }
+
+  .p-inputtext.ng-invalid.ng-dirty:enabled:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 1px #ef4444;
+  }
+
+  /* Fix para small errors */
+  small.p-error {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  /* Fix para card no login/register */
+  .login-card,
+  .register-card {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  /* Garantir que flex utilities do Tailwind funcionem */
+  .flex {
+    display: flex;
+  }
+
+  .flex-column {
+    flex-direction: column;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .gap-3 {
+    gap: 0.75rem;
+  }
+
+  .gap-4 {
+    gap: 1rem;
+  }
+
+  .align-items-center {
+    align-items: center;
+  }
+
+  .justify-content-center {
+    justify-content: center;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .font-medium {
+    font-weight: 500;
+  }
+
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .text-color-secondary {
+    color: #6b7280;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .mt-4 {
+    margin-top: 1rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .pt-4 {
+    padding-top: 1rem;
+  }
+
+  .text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
+  .text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  .text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .mr-2 {
+    margin-right: 0.5rem;
+  }
+
+  .m-0 {
+    margin: 0;
+  }
+
+  .shadow-4 {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Utility Classes adicionais */
+.text-primary {
+  color: var(--p-primary-color, #667eea) !important;
+}
+
+.no-underline {
+  text-decoration: none !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 /* PrimeNG Design Tokens - Tema Aura Light Blue */

@@ -1,12 +1,15 @@
 export interface Address {
-  id: string;
-  userId: string;
+  id?: string;
+  userId?: string;
   street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
   city: string;
   state: string;
-  country: string;
+  country?: string;
   zipCode: string;
-  isDefault: boolean;
+  isDefault?: boolean;
 }
 
 export interface AddressRequest {

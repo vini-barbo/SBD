@@ -26,7 +26,7 @@ export class CartService {
     this.cartSubject.next(cart);
   }
 
-  addItem(variant: ProductVariant, productName: string, imageUrl?: string, quantity: number = 1): void {
+  addItem(variant: ProductVariant, productName: string, productId: string, imageUrl?: string, quantity: number = 1): void {
     const cart = this.cartSubject.value;
     const existingItem = cart.items.find(item => item.variant.id === variant.id);
 
@@ -35,6 +35,7 @@ export class CartService {
       existingItem.subtotal = existingItem.quantity * existingItem.variant.price;
     } else {
       const newItem: CartItem = {
+        productId,
         variant,
         productName,
         imageUrl,

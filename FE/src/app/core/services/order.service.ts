@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Order, OrderRequest } from '../models/order.model';
+import { Order, CreateOrderDto } from '../models/order.model';
 import { Page } from '../models/pagination.model';
 import { OrderMapper } from '../mappers/order.mapper';
 import { PaginationMapper } from '../mappers/pagination.mapper';
@@ -34,7 +34,7 @@ export class OrderService {
     );
   }
 
-  createOrder(orderRequest: OrderRequest): Observable<Order> {
+  createOrder(orderRequest: CreateOrderDto): Observable<Order> {
     return this.http.post<any>(this.apiUrl, orderRequest).pipe(
       map(response => this.orderMapper.toModel(response))
     );

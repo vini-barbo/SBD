@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { AddressService } from '../../core/services/address.service';
@@ -14,7 +14,7 @@ import { CurrencyPipe } from '../../shared/pipes/currency.pipe';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, CurrencyPipe],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, CurrencyPipe],
   template: `
     <div class="max-w-6xl mx-auto px-5 py-10">
       <h1 class="text-4xl font-bold mb-8 text-gray-800">Finalizar Compra</h1>

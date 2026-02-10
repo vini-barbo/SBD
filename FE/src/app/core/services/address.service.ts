@@ -21,6 +21,10 @@ export class AddressService {
     );
   }
 
+  getUserAddresses(userId: string): Observable<Address[]> {
+    return this.getAddressesByUser(userId);
+  }
+
   getAddressById(id: string): Observable<Address> {
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
       map(dto => this.addressMapper.toModel(dto))

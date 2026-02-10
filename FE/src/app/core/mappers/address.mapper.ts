@@ -9,11 +9,14 @@ export class AddressMapper {
       id: dto.id,
       userId: dto.userId,
       street: dto.street,
+      number: dto.number || '',
+      complement: dto.complement,
+      neighborhood: dto.neighborhood || '',
       city: dto.city,
       state: dto.state,
       country: dto.country,
       zipCode: dto.zipCode,
-      isDefault: dto.isDefault
+      isDefault: dto.isDefault || false
     };
   }
   

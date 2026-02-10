@@ -30,8 +30,8 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<User> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
-        const user = this.userMapper.toModel(response.user || response);
-        const token = response.token || 'mock-token-' + Date.now();
+        const user = this.userMapper.toModel(response);
+        const token = 'mock-token-' + Date.now();
         
         this.storageService.setToken(token);
         this.storageService.setUser(user);
